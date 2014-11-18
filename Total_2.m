@@ -1,4 +1,5 @@
 clear
+clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%发动机外特性曲线%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n_min=600;
 n_max=4000;
@@ -11,6 +12,7 @@ ylabel('发动机转矩(N·m)');
 xlabel('发动机转速(r/min)');
 grid on;
 
+%%%%求最大车速
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%驱动力曲线%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 i0=5.83;%主减速器传动比
 nT=0.85;%传动系机械效率
@@ -52,9 +54,6 @@ grid on;
 CD_A=2.77;%空气阻力系数*迎风面积
 f=0.013;%滚动阻力系数
 %Wk=1800;%整车装备质量
-%Gk=Wk*g;
-%Ffk=Gk*f;
-%Ftk=Ffk+Fw;
 g=9.8;
 ua=0:0.1:120;%车速
 
@@ -72,6 +71,12 @@ Gm=Wm*g;
 Ffm=Gm*f;
 Ftm=Ffm+Fw;
 %%计算最高车速
+% for i=1:length(ua)*10
+%     if (Ft5_5(i)<Ftm(ceil(ua5_5(i))))
+%         ua_F_max=ua5_5(i);
+%         break;
+%     end
+% end
 ua_F_max=97;%满载最高车速
 figure;
 plot(ua5_1,Ft5_1,'g');
@@ -191,20 +196,25 @@ legend('1/aj1','1/aj2','1/aj3','1/aj4','1/aj5');
 grid on;
 %axis([0 100 0 20]);
 %%%%%%%%%%%%%%%%%%%%%%%%满载时用2挡起步加速到70km/h的最短加速时间%%%%%%%%%%%%%
-t1=trapz(ua5_1,ajd5_1);
 t2=trapz(ua5_2,ajd5_2);
-t3=trapz(ua5_3,ajd5_3);
-for i=1:length(ua5_4)
-    if (ua5_4(i)>=70)
-        ua4_4_70=i;
+for i3=1:length(ua5_3)
+    if (ua5_3(i3)>ua5_2(end))
+        t3=trapz(ua5_3(i3:end),ajd5_3(i3:end));
         break;
     end
 end
-if (isempty(ua4_4_70))
-    disp('无法达到70km/h');
+for i4=1:length(ua5_4)
+    if (ua5_4(i4)>ua5_3(end))
+        for j4=1:length(ua5_4)
+            if (ua5_4(j4)>=70)
+                t4=trapz((ua5_4(i4:j4)),(ajd5_4(i4:j4)));
+                break;
+            end
+        end
+        break
+    end
 end
-t4=trapz(ua5_4(1:ua4_4_70),ajd5_4(1:ua4_4_70));
-t=(t1+t2+t3+t4)/3.6;
+t=(t2+t3+t4)/3.6;
 disp('满载时用2挡起步加速到70km/h的最短加速时间为');
 disp(t);
 %%%%%%%%%%%%%%%%%%%80km/h分别采用 4档和5档时的百公里油耗%%%%%%%%%%%%%%%%%%%%%
