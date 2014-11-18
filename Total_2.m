@@ -17,7 +17,7 @@ grid on;
 i0=5.83;%主减速器传动比
 nT=0.85;%传动系机械效率
 r=0.367;%车辆半径
-ig5_1=5.56;%f_前缀防止改名时与其他变量重名
+ig5_1=5.56;
 ig5_2=2.769;
 ig5_3=1.644;
 ig5_4=1.00;
@@ -32,24 +32,6 @@ ua5_2=0.377*r.*n.*(1./ig5_2).*(1/i0);
 ua5_3=0.377*r.*n.*(1./ig5_3).*(1/i0);
 ua5_4=0.377*r.*n.*(1./ig5_4).*(1/i0);
 ua5_5=0.377*r.*n.*(1./ig5_5).*(1/i0);
-figure;
-plot(ua5_1,Ft5_1,'g');
-hold on;
-plot(ua5_2,Ft5_2,'m');
-hold on;
-plot(ua5_3,Ft5_3,'b');
-hold on;
-plot(ua5_4,Ft5_4,'r');
-hold on;
-plot(ua5_5,Ft5_5,'r');
-hold on;
-title('五档变速箱驱动力-行驶阻力平衡图');
-ylabel('Ft(N)');
-xlabel('ua(km/h)');
-legend('Ft1','Ft2','Ft3','Ft4','Ft5');
-grid on;
-
-
 
 CD_A=2.77;%空气阻力系数*迎风面积
 f=0.013;%滚动阻力系数
@@ -90,13 +72,13 @@ plot(ua5_3,Ft5_3,'b');
 hold on;
 plot(ua5_4,Ft5_4,'r');
 hold on;
-plot(ua5_5,Ft5_5,'y');
+plot(ua5_5,Ft5_5,'k');
 hold on;
-plot(ua5_5,Ftm5_5,'k');
+plot(ua5_5,Ftm5_5,'y');
 hold on;
 plot(ua5_5(i-1),Ftm5_5(i-1),'.');%画交点
 hold on;
-title('五档变速箱满载时的最高车速');
+title('5档变速箱驱动力-行驶阻力平衡图');
 ylabel('Ft(N)');
 xlabel('ua(km/h)');
 legend('Ft1','Ft2','Ft3','Ft4','Ft5','Ff+Fw');
@@ -126,7 +108,7 @@ plot(ua5_3,i4_3,'b');
 hold on;
 plot(ua5_4,i4_4,'r');
 hold on;
-plot(ua5_5,i4_5,'r');
+plot(ua5_5,i4_5,'k');
 hold on;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%满载时的最大附着率%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -148,7 +130,8 @@ disp(CO2);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%满载时加速度倒数曲线%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Iw1=1.798;%二前轮转动惯量
 Iw2=3.598;%四后轮转动惯量
-Iw=2*Iw1+4*Iw2;
+%Iw=2*Iw1+4*Iw2;
+Iw=Iw1+Iw2;
 If=0.218;%飞轮转动惯量
 delta5_1=1+(1/Wm)*(Iw/r^2)+(1/Wm)*(If*ig5_1^2*i0^2*nT)/(r*r);
 delta5_2=1+(1/Wm)*(Iw/r^2)+(1/Wm)*(If*ig5_2^2*i0^2*nT)/(r*r);
