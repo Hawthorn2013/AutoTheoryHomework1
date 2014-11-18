@@ -51,7 +51,7 @@ Fw5_5=CD_A*ua5_5.^2/21.15;
 Wm=3880;%总质量
 Gm=Wm*g;
 Ffm=Gm*f;
-Ftm=Ffm+Fw;
+Ftm=Ffm+Fw;%行驶阻力
 Ftm5_1=Ffm+Fw5_1;
 Ftm5_2=Ffm+Fw5_2;
 Ftm5_3=Ffm+Fw5_3;
@@ -206,40 +206,61 @@ t=(t2+t3+t4)/3.6;
 disp('满载时用2挡起步加速到70km/h的最短加速时间为');
 disp(t);
 %%%%%%%%%%%%%%%%%%%80km/h分别采用 4档和5档时的百公里油耗%%%%%%%%%%%%%%%%%%%%%
-va=80;
-n_5d=va*1200/50+400;
-disp('5档时发动机转速(r/min)');
-disp(n_5d);
-Tq_5d=-19.313+295.27*(n_5d/1000)-165.44*((n_5d/1000).^2)+40.874*((n_5d/1000).^3)-3.8445*((n_5d/1000).^4);%N*m
-Pe_5d=Tq_5d*(2*pi/60*n_5d)/1000;%kW
-disp('5档时发动机功率(kW)');
-disp(Pe_5d);
-b=260;
-disp('查图取得燃料消耗率b');
-disp(b);
 pg=7;
-Qs_5d=Pe_5d*b/(1.02*80*pg);
-disp('5档百公里油耗Qs');
-disp(Qs_5d);
-n_4d=n_5d*ig5_5/ig5_4;
-disp('4档时发动机转速(r/min)');
-disp(n_4d);
-Tq_4d=-19.313+295.27*(n_4d/1000)-165.44*((n_4d/1000).^2)+40.874*((n_4d/1000).^3)-3.8445*((n_4d/1000).^4);%N*m
-Pe_4d=Tq_4d*(2*pi/60*n_4d)/1000;%kW
-disp('4档时发动机功率(kW)');
+va_80=80;
+n_80_4d=va_80.*i0.*ig5_4/r/0.377;
+n_80_5d=va_80.*i0.*ig5_5/r/0.377;
+
+for j=1:length(ua5_4)
+    if (ua5_4(j)>va_80)
+        Ff_80_4d=Ftm5_4(j);
+        break;
+    end
+end
+for j=1:length(ua5_5)
+    if (ua5_5(j)>va_80)
+        Ff_80_5d=Ftm5_5(j);
+        break;
+    end
+end
+Pe_4d=Ff_80_4d.*va_80/3.6/nT/1000;
+Pe_5d=Ff_80_5d.*va_80/3.6/nT/1000;
+disp('n_80_4d,Pe_4d');
+disp(n_80_4d);
 disp(Pe_4d);
-Qs_4d=Pe_4d*b/(1.02*80*pg);
-disp('4档百公里油耗Qs');
-disp(Qs_4d);
+disp('n_80_5d,Pe_5d');
+disp(n_80_5d);
+disp(Pe_5d);
+b_80_4d=260;
+b_80_5d=250;
+disp('b_80_4d');
+disp(b_80_4d);
+disp('b_80_5d');
+disp(b_80_5d);
+Qs_80_4d=Pe_4d*b_80_4d/(1.02*va_80*pg);
+Qs_80_5d=Pe_5d*b_80_5d/(1.02*va_80*pg);
+disp('Qs_80_4d');
+disp(Qs_80_4d);
+disp('Qs_80_5d');
+disp(Qs_80_5d);
 %%%%%%%%%%%%5档时，车速分别为40、50、60、70和80km/h的燃油消耗量%%%%%%%%%%%%%%
 va=[40, 50, 60, 70, 80];
-n_5d=va.*1200/50+400;
-Tq_5d=-19.313+295.27*(n_5d./1000)-165.44*((n_5d./1000).^2)+40.874*((n_5d./1000).^3)-3.8445*((n_5d./1000).^4);%N*m
-Pe_5d=(Tq_5d).*(2*pi/60*(n_5d))/1000;%kW
-b=260;
+n_5d=va.*i0.*ig5_5/r/0.377;
+for i=1:length(va)
+    for j=1:length(ua5_5)
+        if (ua5_5(j)>va(i))
+            Ff(i)=Ftm5_5(j);
+            break;
+        end
+    end
+end
+Pe_5d=Ff.*va/3.6/nT/1000;
+disp('n_5d,Pe_5d');
+disp(n_5d);
+disp(Pe_5d);
+b=[290,280,260,250,250];
 disp('查图取得燃料消耗率b');
 disp(b);
-%pg=7;
-Qs_5d=Pe_5d.*b/(1.02*80*pg);
-disp('5档百公里油耗Qs');
-disp(Qs_5d);
+Qt_5d=Pe_5d.*b/(367.1*pg);
+disp('5档百公里油耗Qt');
+disp(Qt_5d);
