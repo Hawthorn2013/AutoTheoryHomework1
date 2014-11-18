@@ -70,14 +70,17 @@ Wm=3880;%总质量
 Gm=Wm*g;
 Ffm=Gm*f;
 Ftm=Ffm+Fw;
-%%计算最高车速
-% for i=1:length(ua)*10
-%     if (Ft5_5(i)<Ftm(ceil(ua5_5(i))))
-%         ua_F_max=ua5_5(i);
-%         break;
-%     end
-% end
-ua_F_max=97;%满载最高车速
+Ftm5_1=Ffm+Fw5_1;
+Ftm5_2=Ffm+Fw5_2;
+Ftm5_3=Ffm+Fw5_3;
+Ftm5_4=Ffm+Fw5_4;
+Ftm5_5=Ffm+Fw5_5;
+for i=1:3401
+    if(Ft5_5(i)<Ftm5_5(i))
+        ua_F_max=ua5_5(i-1);%满载最高车速
+        break;
+    end
+end
 figure;
 plot(ua5_1,Ft5_1,'g');
 hold on;
@@ -87,9 +90,11 @@ plot(ua5_3,Ft5_3,'b');
 hold on;
 plot(ua5_4,Ft5_4,'r');
 hold on;
-plot(ua5_5,Ft5_5,'r');
+plot(ua5_5,Ft5_5,'y');
 hold on;
-plot(ua,Ftm,'k');
+plot(ua5_5,Ftm5_5,'k');
+hold on;
+plot(ua5_5(i-1),Ftm5_5(i-1),'.');%画交点
 hold on;
 title('五档变速箱满载时的最高车速');
 ylabel('Ft(N)');
