@@ -63,6 +63,8 @@ for i=1:3401
         break;
     end
 end
+disp('5档变速箱满载最高车速');
+disp(ua_F_max);
 figure;
 plot(ua5_1,Ft5_1,'g');
 hold on;
@@ -113,9 +115,11 @@ hold on;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%满载时的最大附着率%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [i4_1_max,ua4_1_max]=max(i4_1);%求最大值及其位置
+disp('5档变速箱满载时的最大爬坡度的附着率');
+disp(i4_1_max);
 plot(ua5_1(ua4_1_max),i4_1_max,'.');%画点
 hold on;
-title('五档变速箱满载时的最大爬坡度');
+title('5档变速箱满载时的最大爬坡度');
 ylabel('i');
 xlabel('ua(km/h)');
 legend('i1','i2','i3','i4','i5');
